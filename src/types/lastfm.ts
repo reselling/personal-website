@@ -1,0 +1,14 @@
+export interface LastFmImage {
+  "#text": string;
+  size: "small" | "medium" | "large" | "extralarge";
+}
+
+export interface LastFmTrack {
+  name: string;
+  artist: { "#text": string };
+  album: { "#text": string };
+  image: LastFmImage[];
+  url: string;
+  "@attr"?: { nowplaying: string };
+  date?: { uts: string; "#text": string };
+}
