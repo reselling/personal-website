@@ -2,13 +2,11 @@ import { Project } from "@/types/project";
 
 export const projects: Project[] = [
   {
-    title: "Example Project",
+    title: "Home Server",
     description:
-      "A brief description of this project. Replace this with your actual projects.",
-    image: "/images/projects/placeholder.png",
-    tags: ["Next.js", "TypeScript"],
-    url: "https://example.com",
-    github: "https://github.com/yourusername/example",
+      "My home server setup using CasaOS on Ubuntu Server. Built on an old workstation PC. I use it to host my own media library (books and music), file and photo storage as well as other projects. Accessible anywhere in the world with constant sync accross devices.",
+    image: "/images/projects/homeserver.png",
+    tags: ["HomeLabbing", "Server", "Networking"]
   },
   // Add more projects here
 ];
