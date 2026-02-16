@@ -1,4 +1,9 @@
-import { TraktHistoryItem, TraktHistoryItemWithPoster } from "@/types/trakt";
+import {
+  TraktHistoryItem,
+  TraktHistoryItemWithPoster,
+  TraktWatchingItem,
+  TraktWatchingItemWithPoster,
+} from "@/types/trakt";
 import { getMoviePoster, getShowPoster } from "./tmdb";
 
 const TRAKT_BASE_URL = "https://api.trakt.tv";
@@ -35,6 +40,43 @@ async function fetchTraktHistory(
     return res.json();
   } catch (error) {
     console.error("Trakt fetch error:", error);
+    return null;
+  }
+}
+
+export async function getCurrentlyWatching(): Promise<TraktWatchingItemWithPoster | null> {
+  const clientId = process.env.TRAKT_CLIENT_ID;
+  const username = process.env.TRAKT_USERNAME;
+
+  if (!clientId || !username) return null;
+
+  try {
+    const res = await fetch(
+      `${TRAKT_BASE_URL}/users/${username}/watching`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "trakt-api-version": "2",
+          "trakt-api-key": clientId,
+        },
+        next: { revalidate: 60 },
+      }
+    );
+
+    if (res.status === 204 || !res.ok) return null;
+
+    const item: TraktWatchingItem = await res.json();
+    let posterUrl: string | null = null;
+
+    if (item.type === "movie" && item.movie?.ids.tmdb) {
+      posterUrl = await getMoviePoster(item.movie.ids.tmdb);
+    } else if (item.type === "episode" && item.show?.ids.tmdb) {
+      posterUrl = await getShowPoster(item.show.ids.tmdb);
+    }
+
+    return { ...item, posterUrl };
+  } catch (error) {
+    console.error("Trakt watching fetch error:", error);
     return null;
   }
 }

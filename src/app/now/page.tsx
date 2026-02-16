@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { getRecentTracks } from "@/lib/lastfm";
-import { getRecentlyWatched } from "@/lib/trakt";
+import { getRecentlyWatched, getCurrentlyWatching } from "@/lib/trakt";
 import { getCurrentlyReading } from "@/lib/hardcover";
 import { ListeningSection } from "@/components/now/listening-section";
 import { WatchingSection } from "@/components/now/watching-section";
@@ -12,10 +12,11 @@ export const metadata: Metadata = {
 };
 
 export default async function NowPage() {
-  const [tracks, watched, reading] = await Promise.all([
+  const [tracks, watched, reading, watching] = await Promise.all([
     getRecentTracks(5),
     getRecentlyWatched(5),
     getCurrentlyReading(),
+    getCurrentlyWatching(),
   ]);
 
   return (
@@ -29,7 +30,7 @@ export default async function NowPage() {
       </div>
 
       <ListeningSection tracks={tracks} />
-      <WatchingSection items={watched} />
+      <WatchingSection items={watched} currentlyWatching={watching} />
       <ReadingSection books={reading} />
     </div>
   );
