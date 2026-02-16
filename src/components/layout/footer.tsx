@@ -4,7 +4,7 @@ export function Footer() {
       <div className="flex flex-col items-center gap-2 text-sm text-foreground/50">
         <div className="flex gap-4">
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/reselling"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground transition-colors"
@@ -12,15 +12,15 @@ export function Footer() {
             GitHub
           </a>
           <a
-            href="https://twitter.com/yourusername"
+            href="https://www.linkedin.com/in/mario-barraza/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground transition-colors"
           >
-            Twitter
+            LinkedIn
           </a>
           <a
-            href="mailto:you@example.com"
+            href="mailto:owner@mariobarraza.com"
             className="hover:text-foreground transition-colors"
           >
             Email
