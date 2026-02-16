@@ -15,7 +15,7 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <div className="p-4 space-y-2">
         <h3 className="font-semibold">{project.title}</h3>
-        <p className="text-sm text-foreground/60">{project.description}</p>
+        <p className="text-sm text-foreground/60 whitespace-pre-line">{project.description}</p>
         <div className="flex flex-wrap gap-1.5">
           {project.tags.map((tag) => (
             <span
