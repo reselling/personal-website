@@ -3,8 +3,8 @@ export default function Home() {
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Hey, I&apos;m Mario.</h1>
       <p className="text-foreground/70 leading-relaxed">
-        I&apos;m a developer who builds things for the web. Welcome to my
-        corner of the internet where I share my projects and what I&apos;m
+        I&apos;m a student studying Economics and Data Science at Northwestern who builds things as a hobby. Welcome to my
+        site where I share my current projects and what I&apos;m
         currently into.
       </p>
       <p className="text-foreground/70 leading-relaxed">
@@ -14,7 +14,7 @@ export default function Home() {
         </a>{" "}
         or see what I&apos;m{" "}
         <a href="/now" className="underline hover:text-foreground">
-          up to now
+          consuming at the moment.
         </a>
         .
       </p>
