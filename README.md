@@ -1,8 +1,10 @@
 ## Want to recreate?
-
 Created with [Next.js](https://nextjs.org)
 
-Run the development server:
+Clone repo.
+
+
+Run development server.
 
 ```bash
 npm run dev
