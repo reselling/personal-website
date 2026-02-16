@@ -8,3 +8,8 @@ export interface HardcoverBook {
 export interface HardcoverUserBook {
   book: HardcoverBook;
 }
+
+export interface HardcoverUserBookWithDate {
+  book: HardcoverBook;
+  finished_at?: string;
+}

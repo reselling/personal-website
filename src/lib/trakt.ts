@@ -103,3 +103,52 @@ export async function getRecentlyWatched(
 
   return withPosters;
 }
+
+export interface MonthlyWatchStats {
+  movieCount: number;
+  episodeCount: number;
+  movies: TraktHistoryItemWithPoster[];
+  episodes: TraktHistoryItemWithPoster[];
+}
+
+export async function getMonthlyWatchStats(): Promise<MonthlyWatchStats | null> {
+  const items = await fetchTraktHistory(100);
+  if (!items) return null;
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const thisMonth = items.filter(
+    (item) => new Date(item.watched_at) >= startOfMonth
+  );
+
+  const movies = thisMonth.filter((item) => item.type === "movie");
+  const episodes = thisMonth.filter((item) => item.type === "episode");
+
+  const moviesWithPosters = await Promise.all(
+    movies.map(async (item) => {
+      let posterUrl: string | null = null;
+      if (item.movie?.ids.tmdb) {
+        posterUrl = await getMoviePoster(item.movie.ids.tmdb);
+      }
+      return { ...item, posterUrl };
+    })
+  );
+
+  const episodesWithPosters = await Promise.all(
+    episodes.map(async (item) => {
+      let posterUrl: string | null = null;
+      if (item.show?.ids.tmdb) {
+        posterUrl = await getShowPoster(item.show.ids.tmdb);
+      }
+      return { ...item, posterUrl };
+    })
+  );
+
+  return {
+    movieCount: movies.length,
+    episodeCount: episodes.length,
+    movies: moviesWithPosters,
+    episodes: episodesWithPosters,
+  };
+}

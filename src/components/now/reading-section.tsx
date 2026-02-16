@@ -9,7 +9,10 @@ export function ReadingSection({
   if (!books || books.length === 0) {
     return (
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Reading</h2>
+        <div className="flex items-center justify-between">
+          <a href="https://hardcover.app/@resell" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline">Reading</a>
+          <a href="/now/reading" className="text-sm text-foreground/50 hover:text-foreground">See more →</a>
+        </div>
         <p className="text-sm text-foreground/50">
           {books === null
             ? "Unable to load reading list."
@@ -21,7 +24,10 @@ export function ReadingSection({
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold">Reading</h2>
+      <div className="flex items-center justify-between">
+        <a href="https://hardcover.app/@resell" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline">Reading</a>
+        <a href="/now/reading" className="text-sm text-foreground/50 hover:text-foreground">See more →</a>
+      </div>
       <div className="flex gap-4 overflow-x-auto pb-2">
         {books.map((item) => {
           const authors = item.book.contributions

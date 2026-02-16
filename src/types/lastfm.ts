@@ -12,3 +12,20 @@ export interface LastFmTrack {
   "@attr"?: { nowplaying: string };
   date?: { uts: string; "#text": string };
 }
+
+export interface LastFmTopArtist {
+  name: string;
+  playcount: string;
+  url: string;
+  image: LastFmImage[];
+  "@attr": { rank: string };
+}
+
+export interface LastFmTopTrack {
+  name: string;
+  playcount: string;
+  url: string;
+  artist: { name: string; url: string };
+  image: LastFmImage[];
+  "@attr": { rank: string };
+}

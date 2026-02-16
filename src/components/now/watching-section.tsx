@@ -12,7 +12,10 @@ export function WatchingSection({
   if (!items && !currentlyWatching) {
     return (
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Watching</h2>
+        <div className="flex items-center justify-between">
+          <a href="https://letterboxd.com/resell/" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline">Watching</a>
+          <a href="/now/watching" className="text-sm text-foreground/50 hover:text-foreground">See more →</a>
+        </div>
         <p className="text-sm text-foreground/50">
           Unable to load watch history.
         </p>
@@ -33,7 +36,10 @@ export function WatchingSection({
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold">Watching</h2>
+      <div className="flex items-center justify-between">
+        <a href="https://letterboxd.com/resell/" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline">Watching</a>
+        <a href="/now/watching" className="text-sm text-foreground/50 hover:text-foreground">See more →</a>
+      </div>
 
       {currentlyWatching && (
         <div className="flex items-center gap-4 p-3 rounded-lg bg-foreground/5">

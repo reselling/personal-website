@@ -10,7 +10,10 @@ export function ListeningSection({
   if (!tracks) {
     return (
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Listening</h2>
+        <div className="flex items-center justify-between">
+          <a href="https://last.fm/user/reselling" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline">Listening</a>
+          <a href="/now/listening" className="text-sm text-foreground/50 hover:text-foreground">See more →</a>
+        </div>
         <p className="text-sm text-foreground/50">
           Unable to load recent tracks.
         </p>
@@ -20,7 +23,10 @@ export function ListeningSection({
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xl font-semibold">Listening</h2>
+      <div className="flex items-center justify-between">
+        <a href="https://last.fm/user/reselling" target="_blank" rel="noopener noreferrer" className="text-xl font-semibold hover:underline">Listening</a>
+        <a href="/now/listening" className="text-sm text-foreground/50 hover:text-foreground">See more →</a>
+      </div>
       <div className="space-y-3">
         {tracks.map((track, i) => {
           const isNowPlaying = track["@attr"]?.nowplaying === "true";
