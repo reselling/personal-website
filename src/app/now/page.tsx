@@ -24,7 +24,7 @@ export default async function NowPage() {
         <h1 className="text-3xl font-bold">Now</h1>
         <p className="text-foreground/60 mt-2">
           What I&apos;m currently listening to, watching, and reading.
-          Auto-updated throughout the day.
+          Automatically updates throughout the day.
         </p>
       </div>
 
