@@ -15,3 +15,11 @@ export function timeAgo(dateString: string): string {
   const months = Math.floor(days / 30);
   return `${months}mo ago`;
 }
+
+export function formatDate(dateString: string): string {
+  return new Date(dateString + "T00:00:00").toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}

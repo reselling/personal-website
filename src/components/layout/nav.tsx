@@ -7,6 +7,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/projects", label: "Projects" },
   { href: "/now", label: "Now" },
+  { href: "/thoughts", label: "Thoughts" },
 ];
 
 export function Nav() {
@@ -23,7 +24,7 @@ export function Nav() {
             key={link.href}
             href={link.href}
             className={`text-sm transition-colors hover:text-foreground ${
-              pathname === link.href
+              (link.href === "/" ? pathname === "/" : pathname.startsWith(link.href))
                 ? "text-foreground"
                 : "text-foreground/60"
             }`}
