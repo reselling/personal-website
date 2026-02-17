@@ -14,9 +14,7 @@ export default function Home() {
       </div>
       <h1 className="text-3xl font-bold">Hey, I&apos;m Mario.</h1>
       <p className="text-foreground/70 leading-relaxed">
-        I study Economics and Data Science at Northwestern and build things as a hobby. Welcome to my
-        site where I share my projects and what I&apos;m
-        currently into.
+        I study Economics and Data Science @ Northwestern and build things as a hobby. 
       </p>
       <p className="text-foreground/70 leading-relaxed">
         Check out my{" "}
