@@ -2,8 +2,10 @@ export interface BlogPost {
   id: string;
   title: string;
   slug: string;
+  description: string;
   date: string;
-  type: "typed" | "handwritten";
+  type: string;
+  tags: string[];
   published: boolean;
 }
 

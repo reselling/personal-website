@@ -22,7 +22,7 @@ export async function generateMetadata({
   if (!post) return { title: "Post Not Found" };
   return {
     title: post.title,
-    description: `${post.title} — a thought by Mario Barraza`,
+    description: post.description || `${post.title} — a thought by Mario Barraza`,
   };
 }
 
@@ -94,10 +94,10 @@ export default async function ThoughtPostPage({
         </time>
       </header>
 
-      {post.type === "typed" ? (
-        <TypedPostContent pageId={post.id} />
-      ) : (
+      {post.type === "handwritten" ? (
         <HandwrittenPostContent pageId={post.id} />
+      ) : (
+        <TypedPostContent pageId={post.id} />
       )}
     </article>
   );

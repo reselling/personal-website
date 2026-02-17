@@ -38,10 +38,27 @@ export default async function ThoughtsPage() {
                   {formatDate(post.date)}
                 </time>
               </div>
-              {post.type === "handwritten" && (
-                <span className="text-xs text-foreground/40 mt-0.5 inline-block">
-                  handwritten
-                </span>
+              {(post.type || post.tags.length > 0) && (
+                <div className="flex flex-wrap gap-1.5 mt-1.5">
+                  {post.type && (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/70">
+                      {post.type}
+                    </span>
+                  )}
+                  {post.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs px-2 py-0.5 rounded-full bg-foreground/5 text-foreground/70"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              {post.description && (
+                <p className="text-sm text-foreground/50 mt-1">
+                  {post.description}
+                </p>
               )}
             </Link>
           ))}

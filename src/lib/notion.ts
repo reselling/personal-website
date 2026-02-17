@@ -35,13 +35,16 @@ export async function getPublishedPosts(): Promise<BlogPost[] | null> {
 
       const title = props.Title?.title?.[0]?.plain_text ?? "";
       const slug = props.Slug?.rich_text?.[0]?.plain_text ?? "";
+      const description = props.Description?.rich_text?.[0]?.plain_text ?? "";
       const date = props.Date?.date?.start ?? "";
-      const type =
-        (props.Type?.select?.name as "typed" | "handwritten") ?? "typed";
+      const type = props.Type?.select?.name ?? "typed";
+      const tags: string[] = (props.Tags?.multi_select ?? []).map(
+        (t: { name: string }) => t.name
+      );
 
       if (!slug || !date) continue;
 
-      posts.push({ id: page.id, title, slug, date, type, published: true });
+      posts.push({ id: page.id, title, slug, description, date, type, tags, published: true });
     }
 
     return posts;
@@ -76,13 +79,16 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
 
     const title = props.Title?.title?.[0]?.plain_text ?? "";
     const postSlug = props.Slug?.rich_text?.[0]?.plain_text ?? "";
+    const description = props.Description?.rich_text?.[0]?.plain_text ?? "";
     const date = props.Date?.date?.start ?? "";
-    const type =
-      (props.Type?.select?.name as "typed" | "handwritten") ?? "typed";
+    const type = props.Type?.select?.name ?? "typed";
+    const tags: string[] = (props.Tags?.multi_select ?? []).map(
+      (t: { name: string }) => t.name
+    );
 
     if (!postSlug || !date) return null;
 
-    return { id: page.id, title, slug: postSlug, date, type, published: true };
+    return { id: page.id, title, slug: postSlug, description, date, type, tags, published: true };
   } catch (error) {
     console.error("Notion post by slug error:", error);
     return null;
