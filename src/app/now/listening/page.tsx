@@ -1,5 +1,6 @@
 import { Metadata } from "next";
-import { getMonthlyTopArtists, getMonthlyTopTracks } from "@/lib/lastfm";
+import Image from "next/image";
+import { getMonthlyListeningData } from "@/lib/lastfm";
 
 export const metadata: Metadata = {
   title: "Listening Stats",
@@ -7,10 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default async function ListeningStatsPage() {
-  const [artists, tracks] = await Promise.all([
-    getMonthlyTopArtists(10),
-    getMonthlyTopTracks(10),
-  ]);
+  const data = await getMonthlyListeningData(10);
+  const artists = data?.topArtists ?? [];
+  const tracks = data?.topTracks ?? [];
 
   const monthName = new Date().toLocaleString("default", { month: "long" });
 
@@ -26,9 +26,9 @@ export default async function ListeningStatsPage() {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Top Artists</h2>
-        {artists && artists.length > 0 ? (
+        {artists.length > 0 ? (
           <div className="space-y-2">
-            {artists.map((artist) => (
+            {artists.map((artist, i) => (
               <a
                 key={artist.name}
                 href={artist.url}
@@ -37,8 +37,19 @@ export default async function ListeningStatsPage() {
                 className="flex items-center gap-3 group py-1"
               >
                 <span className="text-sm text-foreground/40 w-6 text-right font-mono">
-                  {artist["@attr"].rank}
+                  {i + 1}
                 </span>
+                <div className="relative h-10 w-10 flex-shrink-0 rounded overflow-hidden bg-foreground/5">
+                  {artist.image && (
+                    <Image
+                      src={artist.image}
+                      alt={artist.name}
+                      fill
+                      className="object-cover"
+                      sizes="40px"
+                    />
+                  )}
+                </div>
                 <span className="text-sm font-medium truncate flex-1 group-hover:underline">
                   {artist.name}
                 </span>
@@ -55,25 +66,36 @@ export default async function ListeningStatsPage() {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold">Top Tracks</h2>
-        {tracks && tracks.length > 0 ? (
+        {tracks.length > 0 ? (
           <div className="space-y-2">
-            {tracks.map((track) => (
+            {tracks.map((track, i) => (
               <a
-                key={`${track.name}-${track.artist.name}`}
+                key={`${track.name}-${track.artist}`}
                 href={track.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 group py-1"
               >
                 <span className="text-sm text-foreground/40 w-6 text-right font-mono">
-                  {track["@attr"].rank}
+                  {i + 1}
                 </span>
+                <div className="relative h-10 w-10 flex-shrink-0 rounded overflow-hidden bg-foreground/5">
+                  {track.image && (
+                    <Image
+                      src={track.image}
+                      alt={track.name}
+                      fill
+                      className="object-cover"
+                      sizes="40px"
+                    />
+                  )}
+                </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate group-hover:underline">
                     {track.name}
                   </p>
                   <p className="text-xs text-foreground/50 truncate">
-                    {track.artist.name}
+                    {track.artist}
                   </p>
                 </div>
                 <span className="text-xs text-foreground/40 flex-shrink-0">

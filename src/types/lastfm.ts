@@ -29,3 +29,18 @@ export interface LastFmTopTrack {
   image: LastFmImage[];
   "@attr": { rank: string };
 }
+
+export interface AggregatedArtist {
+  name: string;
+  playcount: number;
+  image: string;
+  url: string;
+}
+
+export interface AggregatedTrack {
+  name: string;
+  artist: string;
+  playcount: number;
+  image: string;
+  url: string;
+}
