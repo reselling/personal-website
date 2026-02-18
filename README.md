@@ -6,10 +6,9 @@ Clone repo.
 git clone https://github.com/reselling/personal-website
 ```
 
-Navigate to where its stored.
-    * Recommend using VS Code
+Navigate to where its stored (Recommend using VS Code)
 
-Run development server.
+Run development server in terminal.
 
 ```bash
 npm run dev
