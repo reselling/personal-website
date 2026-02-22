@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   description: "What I'm currently into.",
 };
 
+export const revalidate = 60;
+
 export default async function NowPage() {
   const [tracks, watched, reading, watching] = await Promise.all([
     getRecentTracks(5),
