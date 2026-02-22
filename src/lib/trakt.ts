@@ -84,10 +84,66 @@ export async function getCurrentlyWatching(): Promise<TraktWatchingItemWithPoste
   }
 }
 
+async function fetchUserRatings(): Promise<Map<number, number>> {
+  const clientId = process.env.TRAKT_CLIENT_ID;
+  const username = process.env.TRAKT_USERNAME;
+  const ratings = new Map<number, number>();
+
+  if (!clientId || !username) return ratings;
+
+  try {
+    const [moviesRes, showsRes] = await Promise.all([
+      fetch(`${TRAKT_BASE_URL}/users/${username}/ratings/movies`, {
+        headers: {
+          "Content-Type": "application/json",
+          "trakt-api-version": "2",
+          "trakt-api-key": clientId,
+          "User-Agent": TRAKT_USER_AGENT,
+        },
+        next: { revalidate: 900 },
+      }),
+      fetch(`${TRAKT_BASE_URL}/users/${username}/ratings/shows`, {
+        headers: {
+          "Content-Type": "application/json",
+          "trakt-api-version": "2",
+          "trakt-api-key": clientId,
+          "User-Agent": TRAKT_USER_AGENT,
+        },
+        next: { revalidate: 900 },
+      }),
+    ]);
+
+    if (moviesRes.ok) {
+      const movies = await moviesRes.json();
+      for (const item of movies) {
+        if (item.movie?.ids?.trakt && item.rating) {
+          ratings.set(item.movie.ids.trakt, item.rating);
+        }
+      }
+    }
+
+    if (showsRes.ok) {
+      const shows = await showsRes.json();
+      for (const item of shows) {
+        if (item.show?.ids?.trakt && item.rating) {
+          ratings.set(item.show.ids.trakt, item.rating);
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Trakt ratings fetch error:", error);
+  }
+
+  return ratings;
+}
+
 export async function getRecentlyWatched(
   limit: number = 5
 ): Promise<TraktHistoryItemWithPoster[] | null> {
-  const items = await fetchTraktHistory(limit);
+  const [items, ratings] = await Promise.all([
+    fetchTraktHistory(limit),
+    fetchUserRatings(),
+  ]);
   if (!items) return null;
 
   const withPosters = await Promise.all(
@@ -100,7 +156,13 @@ export async function getRecentlyWatched(
         posterUrl = await getShowPoster(item.show.ids.tmdb);
       }
 
-      return { ...item, posterUrl };
+      const traktId =
+        item.type === "movie"
+          ? item.movie?.ids.trakt
+          : item.show?.ids.trakt;
+      const rating = traktId ? (ratings.get(traktId) ?? null) : null;
+
+      return { ...item, posterUrl, rating };
     })
   );
 
@@ -115,7 +177,10 @@ export interface MonthlyWatchStats {
 }
 
 export async function getMonthlyWatchStats(): Promise<MonthlyWatchStats | null> {
-  const items = await fetchTraktHistory(100);
+  const [items, ratings] = await Promise.all([
+    fetchTraktHistory(100),
+    fetchUserRatings(),
+  ]);
   if (!items) return null;
 
   const now = new Date();
@@ -134,7 +199,10 @@ export async function getMonthlyWatchStats(): Promise<MonthlyWatchStats | null> 
       if (item.movie?.ids.tmdb) {
         posterUrl = await getMoviePoster(item.movie.ids.tmdb);
       }
-      return { ...item, posterUrl };
+      const rating = item.movie?.ids.trakt
+        ? (ratings.get(item.movie.ids.trakt) ?? null)
+        : null;
+      return { ...item, posterUrl, rating };
     })
   );
 
@@ -144,7 +212,10 @@ export async function getMonthlyWatchStats(): Promise<MonthlyWatchStats | null> 
       if (item.show?.ids.tmdb) {
         posterUrl = await getShowPoster(item.show.ids.tmdb);
       }
-      return { ...item, posterUrl };
+      const rating = item.show?.ids.trakt
+        ? (ratings.get(item.show.ids.trakt) ?? null)
+        : null;
+      return { ...item, posterUrl, rating };
     })
   );
 

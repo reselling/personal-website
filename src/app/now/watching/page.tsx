@@ -70,6 +70,11 @@ export default async function WatchingStatsPage() {
                       <p className="text-xs text-foreground/50">
                         {timeAgo(item.watched_at)}
                       </p>
+                      {item.rating && (
+                        <p className="text-xs text-foreground/40 mt-0.5">
+                          ★ {item.rating}/10
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -104,9 +109,16 @@ export default async function WatchingStatsPage() {
                           : ""}
                       </p>
                     </div>
-                    <span className="text-xs text-foreground/40 flex-shrink-0">
-                      {timeAgo(item.watched_at)}
-                    </span>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      {item.rating && (
+                        <span className="text-xs text-foreground/40">
+                          ★ {item.rating}/10
+                        </span>
+                      )}
+                      <span className="text-xs text-foreground/40">
+                        {timeAgo(item.watched_at)}
+                      </span>
+                    </div>
                   </div>
                 ))}
               </div>

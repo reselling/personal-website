@@ -113,6 +113,11 @@ export function WatchingSection({
                     {subtitle && " · "}
                     {timeAgo(item.watched_at)}
                   </p>
+                  {item.rating && (
+                    <p className="text-xs text-foreground/40 mt-0.5">
+                      ★ {item.rating}/10
+                    </p>
+                  )}
                 </div>
               </div>
             );

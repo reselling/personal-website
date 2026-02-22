@@ -29,6 +29,7 @@ export interface TraktHistoryItem {
 
 export interface TraktHistoryItemWithPoster extends TraktHistoryItem {
   posterUrl: string | null;
+  rating: number | null;
 }
 
 export interface TraktWatchingItem {
