@@ -7,6 +7,7 @@ import {
 import { getMoviePoster, getShowPoster } from "./tmdb";
 
 const TRAKT_BASE_URL = "https://api.trakt.tv";
+const TRAKT_USER_AGENT = "mariobarraza-personal-site/1.0";
 
 async function fetchTraktHistory(
   limit: number
@@ -27,6 +28,7 @@ async function fetchTraktHistory(
           "Content-Type": "application/json",
           "trakt-api-version": "2",
           "trakt-api-key": clientId,
+          "User-Agent": TRAKT_USER_AGENT,
         },
         next: { revalidate: 900 },
       }
@@ -58,6 +60,7 @@ export async function getCurrentlyWatching(): Promise<TraktWatchingItemWithPoste
           "Content-Type": "application/json",
           "trakt-api-version": "2",
           "trakt-api-key": clientId,
+          "User-Agent": TRAKT_USER_AGENT,
         },
         next: { revalidate: 60 },
       }
