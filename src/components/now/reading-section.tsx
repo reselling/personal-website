@@ -56,6 +56,14 @@ export function ReadingSection({
                     No cover
                   </div>
                 )}
+                {item.current_page != null && item.book.pages && (
+                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-foreground/10">
+                    <div
+                      className="h-full bg-foreground/50"
+                      style={{ width: `${Math.min(100, Math.round((item.current_page / item.book.pages) * 100))}%` }}
+                    />
+                  </div>
+                )}
               </div>
               <div>
                 <p className="text-sm font-medium truncate group-hover:underline">

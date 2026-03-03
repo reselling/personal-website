@@ -7,9 +7,11 @@ const CURRENTLY_READING_QUERY = `
     users(where: { username: { _eq: $username } }) {
       user_books(where: { status_id: { _eq: 2 } }) {
         rating
+        current_page
         book {
           title
           slug
+          pages
           image {
             url
           }
