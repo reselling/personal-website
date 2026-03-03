@@ -6,6 +6,7 @@ const CURRENTLY_READING_QUERY = `
   query CurrentlyReading($username: citext!) {
     users(where: { username: { _eq: $username } }) {
       user_books(where: { status_id: { _eq: 2 } }) {
+        rating
         book {
           title
           slug
@@ -74,6 +75,7 @@ const RECENTLY_FINISHED_QUERY = `
         limit: 10
       ) {
         finished_at: updated_at
+        rating
         book {
           title
           slug

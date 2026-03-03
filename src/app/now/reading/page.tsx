@@ -64,6 +64,11 @@ export default async function ReadingStatsPage() {
                     <p className="text-xs text-foreground/50 truncate">
                       {authors}
                     </p>
+                    {item.rating && (
+                      <p className="text-xs text-foreground/40 mt-0.5">
+                        ★ {item.rating}/5
+                      </p>
+                    )}
                   </div>
                 </a>
               );
@@ -117,6 +122,11 @@ export default async function ReadingStatsPage() {
                     <p className="text-xs text-foreground/50 truncate">
                       {authors}
                     </p>
+                    {item.rating && (
+                      <p className="text-xs text-foreground/40 mt-0.5">
+                        ★ {item.rating}/5
+                      </p>
+                    )}
                   </div>
                 </a>
               );
