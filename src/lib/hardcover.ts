@@ -7,6 +7,10 @@ const CURRENTLY_READING_QUERY = `
     users(where: { username: { _eq: $username } }) {
       user_books(where: { status_id: { _eq: 2 } }) {
         rating
+        user_book_reads(order_by: { started_at: desc }, limit: 1) {
+          progress
+          progress_pages
+        }
         book {
           title
           slug

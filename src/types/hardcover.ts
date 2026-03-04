@@ -8,6 +8,7 @@ export interface HardcoverBook {
 export interface HardcoverUserBook {
   book: HardcoverBook;
   rating?: number | null;
+  user_book_reads?: { progress?: number | null; progress_pages?: number | null }[];
 }
 
 export interface HardcoverUserBookWithDate {
