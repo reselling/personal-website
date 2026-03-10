@@ -48,7 +48,7 @@ export async function getCurrentlyReading(): Promise<HardcoverUserBook[] | null>
         query: CURRENTLY_READING_QUERY,
         variables: { username },
       }),
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
     });
 
     if (!res.ok) {
@@ -114,7 +114,7 @@ export async function getRecentlyFinished(): Promise<HardcoverUserBookWithDate[]
         query: RECENTLY_FINISHED_QUERY,
         variables: { username },
       }),
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
     });
 
     if (!res.ok) return null;
