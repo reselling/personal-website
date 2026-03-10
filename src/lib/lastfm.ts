@@ -23,7 +23,7 @@ export async function getRecentTracks(
     });
 
     const res = await fetch(`${LASTFM_BASE_URL}?${params}`, {
-      next: { revalidate: 120 },
+      next: { revalidate: 30 },
     });
 
     if (!res.ok) {
