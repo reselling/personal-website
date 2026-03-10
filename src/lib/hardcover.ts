@@ -5,7 +5,7 @@ const HARDCOVER_ENDPOINT = "https://api.hardcover.app/v1/graphql";
 const CURRENTLY_READING_QUERY = `
   query CurrentlyReading($username: citext!) {
     users(where: { username: { _eq: $username } }) {
-      user_books(where: { status_id: { _eq: 2 } }) {
+      user_books(where: { status_id: { _eq: 2 } }, order_by: { updated_at: desc }) {
         rating
         user_book_reads(order_by: { started_at: desc }, limit: 1) {
           progress
