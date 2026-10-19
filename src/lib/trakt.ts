@@ -40,7 +40,7 @@ async function fetchTraktHistory(
           "trakt-api-key": clientId,
           "User-Agent": TRAKT_USER_AGENT,
         },
-        next: { revalidate: 900 },
+        next: { revalidate: 60 },
         signal: AbortSignal.timeout(10000),
       }
     );
