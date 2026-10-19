@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "lastfm.freetls.fastly.net" },
+      { protocol: "https", hostname: "lastfm-img.freetls.fastly.net" },
       { protocol: "https", hostname: "image.tmdb.org" },
       { protocol: "https", hostname: "assets.hardcover.app" },
       { protocol: "https", hostname: "storage.googleapis.com" },

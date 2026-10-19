@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPublishedPosts, getPostBySlug, getPostBlocks } from "@/lib/notion";
 import { NotionRenderer } from "@/components/blog/notion-renderer";
@@ -82,12 +83,12 @@ export default async function ThoughtPostPage({
   return (
     <article className="space-y-8">
       <header>
-        <a
+        <Link
           href="/thoughts"
           className="text-sm text-foreground/50 hover:text-foreground"
         >
           ← Back to Thoughts
-        </a>
+        </Link>
         <h1 className="text-3xl font-bold mt-2">{post.title}</h1>
         <time className="text-sm text-foreground/40 mt-1 block font-mono">
           {formatDate(post.date)}

@@ -9,6 +9,16 @@ import { getMoviePoster, getShowPoster } from "./tmdb";
 const TRAKT_BASE_URL = "https://api.trakt.tv";
 const TRAKT_USER_AGENT = "mariobarraza-personal-site/1.0";
 
+function logTraktError(status: number) {
+  if (status === 403) {
+    console.error("Trakt: Client ID rejected or app unapproved. Check the existing app at https://developer.trakt.tv/apps and TRAKT_CLIENT_ID in local and hosting settings.");
+  } else if (status === 401) {
+    console.error("Trakt: This account requires OAuth access. Check account privacy and app authorization.");
+  } else {
+    console.error("Trakt API HTTP error:", status);
+  }
+}
+
 async function fetchTraktHistory(
   limit: number
 ): Promise<TraktHistoryItem[] | null> {
@@ -31,17 +41,18 @@ async function fetchTraktHistory(
           "User-Agent": TRAKT_USER_AGENT,
         },
         next: { revalidate: 900 },
+        signal: AbortSignal.timeout(10000),
       }
     );
 
     if (!res.ok) {
-      console.error("Trakt API error:", res.status);
+      logTraktError(res.status);
       return null;
     }
 
     return res.json();
-  } catch (error) {
-    console.error("Trakt fetch error:", error);
+  } catch {
+    console.error("Trakt history request failed or timed out.");
     return null;
   }
 }
@@ -63,10 +74,15 @@ export async function getCurrentlyWatching(): Promise<TraktWatchingItemWithPoste
           "User-Agent": TRAKT_USER_AGENT,
         },
         next: { revalidate: 60 },
+        signal: AbortSignal.timeout(10000),
       }
     );
 
-    if (res.status === 204 || !res.ok) return null;
+    if (res.status === 204) return null;
+    if (!res.ok) {
+      logTraktError(res.status);
+      return null;
+    }
 
     const item: TraktWatchingItem = await res.json();
     let posterUrl: string | null = null;
@@ -78,8 +94,8 @@ export async function getCurrentlyWatching(): Promise<TraktWatchingItemWithPoste
     }
 
     return { ...item, posterUrl };
-  } catch (error) {
-    console.error("Trakt watching fetch error:", error);
+  } catch {
+    console.error("Trakt watching request failed or timed out.");
     return null;
   }
 }
@@ -101,6 +117,7 @@ async function fetchUserRatings(): Promise<Map<number, number>> {
           "User-Agent": TRAKT_USER_AGENT,
         },
         next: { revalidate: 900 },
+        signal: AbortSignal.timeout(10000),
       }),
       fetch(`${TRAKT_BASE_URL}/users/${username}/ratings/shows`, {
         headers: {
@@ -110,6 +127,7 @@ async function fetchUserRatings(): Promise<Map<number, number>> {
           "User-Agent": TRAKT_USER_AGENT,
         },
         next: { revalidate: 900 },
+        signal: AbortSignal.timeout(10000),
       }),
     ]);
 
@@ -130,8 +148,8 @@ async function fetchUserRatings(): Promise<Map<number, number>> {
         }
       }
     }
-  } catch (error) {
-    console.error("Trakt ratings fetch error:", error);
+  } catch {
+    console.error("Trakt ratings request failed or timed out.");
   }
 
   return ratings;

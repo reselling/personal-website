@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { MusicArtwork } from "./music-artwork";
 import { LastFmTrack } from "@/types/lastfm";
 import { timeAgo } from "@/lib/utils";
 
@@ -42,15 +42,11 @@ export function ListeningSection({
               className="flex items-center gap-3 group"
             >
               <div className="relative h-12 w-12 flex-shrink-0 rounded overflow-hidden bg-foreground/5">
-                {albumArt && (
-                  <Image
-                    src={albumArt}
-                    alt={track.album["#text"]}
-                    fill
-                    className="object-cover"
-                    sizes="48px"
-                  />
-                )}
+                <MusicArtwork
+                  src={albumArt}
+                  alt={track.album["#text"]}
+                  sizes="48px"
+                />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium truncate group-hover:underline">

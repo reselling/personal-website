@@ -24,6 +24,7 @@ export async function getRecentTracks(
 
     const res = await fetch(`${LASTFM_BASE_URL}?${params}`, {
       next: { revalidate: 30 },
+      signal: AbortSignal.timeout(10000),
     });
 
     if (!res.ok) {
@@ -32,9 +33,13 @@ export async function getRecentTracks(
     }
 
     const data = await res.json();
+    if (data.error) {
+      console.error("Last.fm recent tracks API error:", data.error);
+      return null;
+    }
     return data.recenttracks?.track ?? null;
-  } catch (error) {
-    console.error("Last.fm fetch error:", error);
+  } catch {
+    console.error("Last.fm recent tracks request failed or timed out.");
     return null;
   }
 }
@@ -71,12 +76,20 @@ export async function getMonthlyListeningData(
       });
 
       const res = await fetch(`${LASTFM_BASE_URL}?${params}`, {
-        next: { revalidate: 3600 },
+        next: { revalidate: 300 },
+        signal: AbortSignal.timeout(10000),
       });
 
-      if (!res.ok) break;
+      if (!res.ok) {
+        console.error("Last.fm monthly listening HTTP error:", res.status);
+        return null;
+      }
       const data = await res.json();
-      const pageTracks: LastFmTrack[] = data.recenttracks?.track ?? [];
+      if (data.error || !Array.isArray(data.recenttracks?.track)) {
+        console.error("Last.fm monthly listening API error:", data.error ?? "Invalid response");
+        return null;
+      }
+      const pageTracks: LastFmTrack[] = data.recenttracks.track;
       if (pageTracks.length === 0) break;
 
       allTracks.push(...pageTracks);
@@ -126,8 +139,8 @@ export async function getMonthlyListeningData(
       .slice(0, limit);
 
     return { topArtists, topTracks };
-  } catch (error) {
-    console.error("Last.fm monthly listening data error:", error);
+  } catch {
+    console.error("Last.fm monthly listening request failed or timed out.");
     return null;
   }
 }
