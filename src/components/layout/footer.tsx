@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="border-t border-foreground/10 py-8 mt-16">
@@ -25,6 +27,9 @@ export function Footer() {
           >
             Email
           </a>
+          <Link href="/privacy" className="hover:text-foreground transition-colors">
+            Privacy
+          </Link>
         </div>
       </div>
     </footer>
